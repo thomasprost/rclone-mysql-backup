@@ -2,6 +2,7 @@
 
 set -euo pipefail
 
+
 # shellcheck disable=SC2086
 mydumper --host "$MYSQL_HOST" --user $MYSQL_USER --password $MYSQL_PASSWORD --port $MYSQL_PORT --database $MYSQL_DATABASE -C -c --clear -o backup
 rclone config touch
@@ -14,4 +15,5 @@ secret_access_key = $R2_SECRET_ACCESS_KEY
 endpoint = $R2_ENDPOINT
 acl = private
 EOF
-rclone sync backup remote:"$R2_BUCKET"/"$R2_PATH"
+DATE=$(date -u +%F)
+rclone sync backup remote:"$R2_BUCKET"/"$R2_PATH"/$DATE
