@@ -16,4 +16,4 @@ endpoint = $R2_ENDPOINT
 acl = private
 EOF
 DATE=$(date -u +%F)
-rclone sync backup remote:"$R2_BUCKET"/"$R2_PATH"/$DATE
+rclone copy backup remote:"$R2_BUCKET"/"$R2_PATH"/$DATE
