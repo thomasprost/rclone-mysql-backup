@@ -41,9 +41,16 @@ Then, in settings, set restart to never and input a cron schedule to backup as o
 ## Restoring from a backup
 
 1. Install [mydumper] and [rclone]
-2. Create the same [rclone config file] that this container does
-3. Run `rclone copy remote:$R2_BUCKET/$R2_PATH ./$LOCAL_FOLDER_TO_CREATE`
-4. Run `myloader -h $MYSQL_HOST -u $MYSQL_USER -p $MYSQL_PASSWORD -d $LOCAL_FOLDER_TO_CREATE`
+2. Create the same [rclone config file] that this container does (if you lost your R2 credentials, generate new ones from the Cloudflare dashboard — they grant the same bucket access)
+3. List available backups to find the date you want to restore:
+   ```
+   rclone lsd remote:$R2_BUCKET/$R2_PATH
+   ```
+4. Download the backup for that date:
+   ```
+   rclone copy remote:$R2_BUCKET/$R2_PATH/YYYY-MM-DD ./restore
+   ```
+5. Run `myloader -h $MYSQL_HOST -u $MYSQL_USER -p $MYSQL_PASSWORD --overwrite-tables -d ./restore`
 
 ## FAQ
 
